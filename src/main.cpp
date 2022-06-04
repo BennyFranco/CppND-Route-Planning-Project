@@ -29,13 +29,18 @@ static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
 
 static void ReadValue(float &value, const std::string& label)
 {
-    bool value_is_invalid = true;
+    bool value_is_invalid;
     do {
         std::cout << label;
         std::cin >> value;
-        value_is_invalid = value < 0 || value > 100;
+        value_is_invalid = value < 0 || value > 100 || !std::cin.good();
         if (value_is_invalid)
-            std::cout << "The value must be greater or equal to 0 and less or equal to 100" << std::endl;
+        {
+            std::cout << "The value must be greater or equal to 0 and less or equal to 100 and must be a number!" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+
     }  while(value_is_invalid);
 }
 
