@@ -109,21 +109,15 @@ void RoutePlanner::AStarSearch() {
 
     // TODO: Implement your solution here.
     current_node = start_node;
-    current_node->g_value = 0.f;
     current_node->h_value = CalculateHValue(current_node);
     current_node->visited = true;
-    open_list.push_back(current_node);
 
-    while(!open_list.empty())
+    do
     {
-        current_node = NextNode();
-        if(current_node == end_node)
-        {
-            m_Model.path = ConstructFinalPath(current_node);
-            return;
-        }
-
         AddNeighbors(current_node);
-    }
+        current_node = NextNode();
+    } while(current_node != end_node);
+
+    m_Model.path = ConstructFinalPath(current_node);
 }
 
